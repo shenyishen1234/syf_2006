@@ -1,0 +1,8 @@
+.home .el-carousel{
+    width: 300px;
+  }
+/*登录页表单输入框样式*/
+.login-page .el-input__inner{
+    widows: 83% !important;
+    
+  }  
