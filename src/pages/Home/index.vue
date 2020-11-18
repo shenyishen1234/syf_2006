@@ -51,17 +51,29 @@
         <el-header>
           <el-row type="flex" class="row-bg" justify="space-between">
             <el-col :span="6"
-              ><div class="grid-content bg-purple"></div
+              ><div class="grid-content">
+                  图标
+                </div
             ></el-col>
             <el-col :span="6"
-              ><div class="grid-content bg-purple-light"></div
+              ><div class="grid-content ">
+                  万锋管理系统 
+                </div
             ></el-col>
             <el-col :span="6"
-              ><div class="grid-content bg-purple"></div
+              ><div class="grid-content ">
+                  <el-avatar :size="40"
+                           fit="fit"
+                           src="http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIzXDib7zrmdYxdEQpYk85B26DZAJS6PUJC7ic4Fydibdz9L2gU3hloPcibuyo0xAFztxqPbgdVWp1zpQ/132"></el-avatar>
+                <span>欢迎您:</span>
+                <b class="nickname">{{userInfo.nickname}}</b>
+                <span class="quit" @click="quit"
+                      >退出</span>
+                </div
             ></el-col>
           </el-row>
         </el-header>
-        <!-- 主体部分 -->
+        <!-- main内容 -->
         <el-main>Main</el-main>
       </el-container>
     </el-container>
@@ -69,7 +81,16 @@
 </template>
 
 <script>
+import {getloginlog} from "@/api"
+import {mapState} from "vuex"
+// import subMenu from '../../components/subMenu'
 export default {
+  // components:{
+  //   subMenu
+  // },
+  computed:{
+    ...mapState(['userInfo'])
+  },
   data() {
     return {
       isCollapse: true
@@ -81,18 +102,39 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },   
+    quit(){
+      //退出登入
+      //1、清除token和userInfo
+      //2、跳转到登入页
+
+      localStorage.removeItem("syf2006-token")
+      localStorage.removeItem("syf2006-userInfo")
+      this.$router.push("/login")
     }
-  }
+  },
+  mounted(){
+    getloginlog()
+    .then(res=>{
+      console.log(res);
+    })
+  },
 };
 </script>
 
 <style>
+.quit{
+  cursor: pointer;
+  color: hotpink;
+}
+
 .el-header,
 .el-footer {
-  background-color: #b3c0d1;
+  background-color: #41b883;
   color: #333;
   text-align: center;
   line-height: 60px;
+  padding-bottom: 85px;
 }
 
 .el-aside {
@@ -100,6 +142,11 @@ export default {
   color: #333;
   text-align: center;
   line-height: 200px;
+}
+
+.el-avatar{
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .el-main {
@@ -110,7 +157,7 @@ export default {
 }
 
 body > .el-container {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .el-container:nth-child(5) .el-aside,
@@ -124,6 +171,7 @@ body > .el-container {
 
 .el-row {
   margin-bottom: 20px;
+  background: aqua;
   &:last-child {
     margin-bottom: 0;
   }
@@ -142,10 +190,10 @@ body > .el-container {
 }
 .grid-content {
   border-radius: 4px;
-  min-height: 36px;
+  min-height: 40px;
 }
 .row-bg {
   padding: 10px 0;
-  background-color: #f9fafc;
+  background-color: #41b883;
 }
 </style>
