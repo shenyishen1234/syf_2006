@@ -23,7 +23,7 @@
           <el-input
             type="password"
             v-model="loginForm.password"
-            autocomplete="off"
+            autocomplete="off" @keyup.enter.native="submitForm('loginForm')"
           ></el-input>
         </el-form-item>
 
@@ -113,7 +113,7 @@ export default {
               //更改vuex中state['userInfo']的值
               this.SET_USERINFO(res.data.userInfo)
               //跳转到主页
-              this.$router.push("/home")
+              this.$router.push("/")
             }else{
               //用户中或者密码错误
               

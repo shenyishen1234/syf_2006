@@ -2,16 +2,15 @@
   <div class="home-page">
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
-        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
+      <el-aside width="200">
+        <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
           <el-radio-button :label="false">展开</el-radio-button>
           <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group>
+        </el-radio-group> -->
         <el-menu
           default-active="1-4-1"
           class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
+          :router="true"
           :collapse="isCollapse"
         >
           <el-submenu index="1">
@@ -24,35 +23,18 @@
               <el-menu-item index="1-1">选项1</el-menu-item>
               <el-menu-item index="1-2">选项2</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
-              <span slot="title">选项4</span>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
           </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
-          </el-menu-item>
+          <el-menu-item index="/student">学生信息</el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
         <!-- 顶部栏 -->
-        <el-header>
+        <el-header style="height:85px">
           <el-row type="flex" class="row-bg" justify="space-between">
             <el-col :span="6"
               ><div class="grid-content">
-                  图标
+                <i class="iconfont icon-icon-"  @click="isCollapse=!isCollapse"></i>
+                
                 </div
             ></el-col>
             <el-col :span="6"
@@ -74,7 +56,9 @@
           </el-row>
         </el-header>
         <!-- main内容 -->
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -93,7 +77,7 @@ export default {
   },
   data() {
     return {
-      isCollapse: true
+      isCollapse: false
     };
   },
   methods: {
@@ -123,6 +107,13 @@ export default {
 </script>
 
 <style>
+.icon-icon-{
+  font-size: 50px !important;
+  color: hotpink;
+  cursor: pointer;
+  padding-right: 100px;
+  margin-right: 100px;
+}
 .quit{
   cursor: pointer;
   color: hotpink;
@@ -130,7 +121,7 @@ export default {
 
 .el-header,
 .el-footer {
-  background-color: #41b883;
+  background:linear-gradient(135deg,#4c67ff,#5635df);
   color: #333;
   text-align: center;
   line-height: 60px;
@@ -169,13 +160,20 @@ body > .el-container {
   line-height: 320px;
 }
 
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
+
 .el-row {
   margin-bottom: 20px;
   background: aqua;
-  &:last-child {
+  
+}
+
+.el-row:last-child {
     margin-bottom: 0;
   }
-}
 .el-col {
   border-radius: 4px;
 }
@@ -191,9 +189,11 @@ body > .el-container {
 .grid-content {
   border-radius: 4px;
   min-height: 40px;
+  height: 65px;
 }
+
 .row-bg {
   padding: 10px 0;
-  background-color: #41b883;
+  background:linear-gradient(135deg,#4c67ff,#5635df);
 }
 </style>
