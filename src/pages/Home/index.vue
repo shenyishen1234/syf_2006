@@ -8,55 +8,51 @@
           <el-radio-button :label="true">收起</el-radio-button>
         </el-radio-group> -->
         <el-menu
-          default-active="1-4-1"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           :router="true"
           :collapse="isCollapse"
         >
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">导航一</span>
-            </template>
-            <el-menu-item-group>
-              <span slot="title">分组一</span>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-menu-item index="/student">学生信息</el-menu-item>
+          <qf-sub-menu :sideMenu="menuList"></qf-sub-menu>
         </el-menu>
       </el-aside>
       <el-container>
         <!-- 顶部栏 -->
-        <el-header style="height:85px">
+        <el-header style="height: 85px">
           <el-row type="flex" class="row-bg" justify="space-between">
             <el-col :span="6"
               ><div class="grid-content">
-                <i class="iconfont icon-icon-"  @click="isCollapse=!isCollapse"></i>
-                
-                </div
+                <i
+                  class="iconfont icon-icon-"
+                  @click="isCollapse = !isCollapse"
+                ></i></div
             ></el-col>
             <el-col :span="6"
-              ><div class="grid-content ">
-                  万锋管理系统 
-                </div
-            ></el-col>
+              ><div class="grid-content">万锋管理系统</div></el-col
+            >
             <el-col :span="6"
-              ><div class="grid-content ">
-                  <el-avatar :size="40"
-                           fit="fit"
-                           src="http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIzXDib7zrmdYxdEQpYk85B26DZAJS6PUJC7ic4Fydibdz9L2gU3hloPcibuyo0xAFztxqPbgdVWp1zpQ/132"></el-avatar>
+              ><div class="grid-content">
+                <el-avatar
+                  :size="40"
+                  fit="fit"
+                  src="http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIzXDib7zrmdYxdEQpYk85B26DZAJS6PUJC7ic4Fydibdz9L2gU3hloPcibuyo0xAFztxqPbgdVWp1zpQ/132"
+                ></el-avatar>
                 <span>欢迎您:</span>
-                <b class="nickname">{{userInfo.nickname}}</b>
-                <span class="quit" @click="quit"
-                      >退出</span>
-                </div
-            ></el-col>
+                <b class="nickname">{{ userInfo.nickname }}</b>
+                <span class="quit" @click="quit">退出</span>
+              </div></el-col
+            >
           </el-row>
         </el-header>
         <!-- main内容 -->
         <el-main>
+          <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/Welcome' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path:crumb.path}" v-for="crumb in crumbs" :key="crumb.id">
+              {{crumb.meta.name}}
+            </el-breadcrumb-item>
+
+          </el-breadcrumb>
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -65,19 +61,21 @@
 </template>
 
 <script>
-import {getloginlog} from "@/api"
-import {mapState} from "vuex"
+// import { getloginlog } from "@/api";
+import { mapState } from "vuex";
+import subMenu from "../../components/subMenu.vue";
 // import subMenu from '../../components/subMenu'
 export default {
   // components:{
   //   subMenu
   // },
-  computed:{
-    ...mapState(['userInfo'])
+
+  computed: {
+    ...mapState(["userInfo", "menuList","crumbs"]),
   },
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
     };
   },
   methods: {
@@ -86,42 +84,43 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    },   
-    quit(){
+    },
+    quit() {
       //退出登入
       //1、清除token和userInfo
       //2、跳转到登入页
 
-      localStorage.removeItem("syf2006-token")
-      localStorage.removeItem("syf2006-userInfo")
-      this.$router.push("/login")
-    }
+      localStorage.removeItem("syf2006-token");
+      localStorage.removeItem("syf2006-userInfo");
+      this.$router.push("/login");
+      //刷新页面
+      window.location.reload();
+    },
   },
-  mounted(){
-    getloginlog()
-    .then(res=>{
-      console.log(res);
-    })
+  mounted() {
+    // getloginlog().then((res) => {
+    //   console.log(res);
+    // });
   },
 };
 </script>
 
 <style>
-.icon-icon-{
+.icon-icon- {
   font-size: 50px !important;
   color: hotpink;
   cursor: pointer;
   padding-right: 100px;
   margin-right: 100px;
 }
-.quit{
+.quit {
   cursor: pointer;
   color: hotpink;
 }
 
 .el-header,
 .el-footer {
-  background:linear-gradient(135deg,#4c67ff,#5635df);
+  background: linear-gradient(135deg, #4c67ff, #5635df);
   color: #333;
   text-align: center;
   line-height: 60px;
@@ -135,7 +134,7 @@ export default {
   line-height: 200px;
 }
 
-.el-avatar{
+.el-avatar {
   vertical-align: middle;
   margin-right: 10px;
 }
@@ -161,19 +160,18 @@ body > .el-container {
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
-  }
+  width: 200px;
+  min-height: 400px;
+}
 
 .el-row {
   margin-bottom: 20px;
   background: aqua;
-  
 }
 
 .el-row:last-child {
-    margin-bottom: 0;
-  }
+  margin-bottom: 0;
+}
 .el-col {
   border-radius: 4px;
 }
@@ -194,6 +192,6 @@ body > .el-container {
 
 .row-bg {
   padding: 10px 0;
-  background:linear-gradient(135deg,#4c67ff,#5635df);
+  background: linear-gradient(135deg, #4c67ff, #5635df);
 }
 </style>

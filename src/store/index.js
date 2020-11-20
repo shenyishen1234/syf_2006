@@ -20,7 +20,8 @@ userInfo = JSON.parse(userInfo)
 export default new Vuex.Store({
   state: {
     userInfo,
-    menuList:[]//定义用户侧边栏菜单
+    menuList:[],//定义用户侧边栏菜单
+    crumbs:[]
   },
   mutations: {
     //更改userInfo
@@ -35,8 +36,12 @@ export default new Vuex.Store({
       let target = dynamicRoutes.find(item => item.path === "/")
       target.children = [...state.menuList]
       //2、动态添加路由配置到router/routes中
-      console.log(dynamicRoutes);
+      // console.log(dynamicRoutes);
       router.addRoutes(dynamicRoutes)
+    },
+    //设置面包屑
+    SET_CRUMBS(state,payload){
+      state.crumbs = payload
     }
   },
   actions: {

@@ -11,8 +11,15 @@ import "element-ui/lib/theme-chalk/index.css";
 //引入 iconfont
 import './assets/iconfont/iconfont.css'
 
-Vue.config.productionTip = false;
+//引入 subMenu组件
+import qfSubMenu from "qf-sub-menu"
+//nprogress进度条
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+// Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(qfSubMenu)
 
 //按需引入
 
@@ -25,8 +32,9 @@ Vue.use(ElementUI);
 
 //路由前置钩子（导航守卫）
 router.beforeEach((to,from,next)=>{
+  NProgress.set(0.99);
   //用户登入之后，localStorage中有token
-  let token = localStorage.getItem("syf2006-token")
+  let token = localStorage.getItem("syf2006-token")||null
   // console.log(to);
   if(token){
     //如果是注册页面或者是登入页面，直接放行
@@ -48,6 +56,14 @@ router.beforeEach((to,from,next)=>{
       next({path:"/login"})
     }
   }
+})
+
+//使用路由后置钩子处理面包屑
+router.afterEach((to,from)=>{
+  let crumblist = to.matched.slice(1)
+  console.log(crumblist);
+  store.commit("SET_CRUMBS",crumblist)
+  NProgress.done()
 })
 
 import "./utils/recursionRoutes"

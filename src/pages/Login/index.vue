@@ -113,7 +113,7 @@ export default {
               //更改vuex中state['userInfo']的值
               this.SET_USERINFO(res.data.userInfo)
               //跳转到主页
-              this.$router.push("/")
+              this.$router.push("/Welcome")
             }else{
               //用户中或者密码错误
               

@@ -5,8 +5,13 @@
 </template>
 <script>
 export default{
+  data(){
+    return {
+      intput:''
+    }
+  },
   mounted(){
-    this.$store.dispatch("FETCH_MENULIST")
+    // this.$store.dispatch("FETCH_MENULIST")
   }
 }
 </script>
